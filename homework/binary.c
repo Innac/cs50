@@ -1,3 +1,12 @@
+/****************************************************
+ * Problem Set 3 : Binary Search 
+ * 
+ * User has to find a needle (number) in a haystack
+ * (array of numbers)
+ *
+ ****************************************************/
+
+
 #include <cs50.h>
 #include <stdio.h>
 
