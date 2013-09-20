@@ -1,4 +1,4 @@
-/****************************************************************************
+/***************************************************************************
  * scramble.c
  *
  * Problem Set 3
@@ -161,24 +161,31 @@ int main(int argc, string argv[])
         // prompt for word
         printf("> ");
         string s = GetString();
-
-        // quit playing if user hits ctrl-d
-        if (s == NULL)
-            break;
-
-        // log word
-        fprintf(log, "%s\n", s);
-
-        // check whether to scramble grid
-        if (strcmp(s, "SCRAMBLE") == 0)
-            scramble();
-
-        // or to look for word on grid and in dictionary
-        else
+        if(s != NULL)
         {
-            if (find(s) && lookup(s))
-                score += strlen(s);
-        }
+            // log word
+            fprintf(log, "%s\n", s);
+            
+            //capitalize lowercase letters to avoid case sensitivity
+            for(int i = 0, n = strlen(s); i < n; i++)
+            {
+                if(s[i] >= 'a' && s[i]<= 'z')
+                    s[i] = toupper(s[i]);
+            }
+            // check whether to scramble grid
+            if (strcmp(s, "SCRAMBLE") == 0)
+            scramble();
+            
+            // or to look for word on grid and in dictionary
+            else
+            {
+                if (find(s) && lookup(s))
+                    score += strlen(s);
+            }    
+        } 
+        else
+            // quit playing if user hits ctrl-d
+            break;
     }
 
     // close log
@@ -247,7 +254,17 @@ bool crawl(string letters, int x, int y)
  */
 void draw(void)
 {
-    // TODO
+    //iterate over grid
+    for(int row = 0; row < DIMENSION; row++)
+    {
+        for(int col = 0; col < DIMENSION; col++)
+        {
+            //print every line of grid
+            printf(" %c ", grid[row][col]);
+        }
+        printf("\n");
+    }
+    printf(" \n ");
 }
 
 /**
@@ -379,7 +396,18 @@ bool load(string s)
  */
 bool lookup(string s)
 {
-    // TODO
+    for(int i = 0; i < dictionary.size; i++)
+    {
+        //check if the word is in a dictionary and if it's found for the first time
+        if((strcmp(s, dictionary.words[i].letters) == 0) && (dictionary.words[i].found == false))
+        {
+            //marks the word as already used
+            dictionary.words[i].found = true;
+            
+            //confirms that the word was found in a dic and for the first time
+            return true;
+        }
+    }
     return false;
 }
 
@@ -389,5 +417,28 @@ bool lookup(string s)
  */
 void scramble(void)
 {
-    // TODO
+    // create temp grid
+    char temp[DIMENSION][DIMENSION];
+    
+    // iterates through grid and copies rotated values into temp grid
+    for (int row = 0; row < DIMENSION; row++)
+    {
+        for (int col = 0; col < DIMENSION; col++)
+        {
+            // rotates grid 90 degrees clockwise and stores in temp
+            temp[(DIMENSION - 1)-col][row] = grid[row][col];
+        }
+
+    }
+    
+
+    // iterates through temp and copies the rotated values over the old grid values
+    for (int row = 0; row < DIMENSION; row++)
+    {
+        for (int col = 0; col < DIMENSION; col++)
+        {
+            grid[row][col] = temp[row][col];
+        }
+    }
+
 }
