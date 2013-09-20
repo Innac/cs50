@@ -8,6 +8,8 @@
  * Usage: scramble [#]
  *
  * where # is an optional grid number.
+ * 
+ * by Ina S.
  ***************************************************************************/
  
 #include <cs50.h>
